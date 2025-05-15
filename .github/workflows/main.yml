@@ -1,6 +1,3 @@
-
-'Test GitHub Actions' :
-  runs-on: ubuntu-latest
 name: CI/CD - React avec tous les tests
 
 on:
@@ -72,6 +69,3 @@ jobs:
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: frontend/build
->>>>>>> 197496b (Ajout du pipeline GtiHub Actions)
