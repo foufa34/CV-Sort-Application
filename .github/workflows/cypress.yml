@@ -29,7 +29,7 @@ jobs:
         # npm run preview démarre vite sur http://localhost:4173 par défaut
 
       - name: Wait for the app to be ready
-        uses: jakejarvis/wait-action@v0.1.2
+        uses: chrnom/wait-for@v1
         with:
           url: 'http://localhost:4173'
           timeout: 60
