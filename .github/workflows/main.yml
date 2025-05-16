@@ -1,4 +1,4 @@
-name: CI/CD - React avec tous les tests
+name: CI - Tests React App
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
 
     services:
@@ -33,7 +33,7 @@ jobs:
       DB_NAME: testdb
 
     steps:
-      - name: 📥 Checkout du code
+      - name: 📥 Cloner le code
         uses: actions/checkout@v3
 
       - name: 🔧 Installer Node.js
@@ -42,30 +42,28 @@ jobs:
           node-version: '18'
 
       - name: 📦 Installer les dépendances
-        run: |
-          cd frontend
-          npm ci
+        run: npm ci
 
-      - name: ✅ Lancer les tests unitaires
-        run: |
-          cd frontend
-          npm run test:unit
+      - name: ✅ Lancer les tests unitaires (Jest)
+        run: npm run test:unit
 
       - name: 🌐 Lancer les tests E2E (Cypress)
         run: |
-          cd frontend
           npm run build
-          npx serve -s build &   # sert le build localement
+          npx serve -s build &   # Sert le frontend
           sleep 5
-          npx cypress run
+          npm run test:e2e
 
-      - name: 🏗️ Build final de l'application
+      - name: 📊 Analyse SonarQube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd frontend
-          npm run build
-
-      - name: 🚀 Déploiement FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          npm install -g sonar-scanner
+          sonar-scanner \
+            -Dsonar.projectKey=cv-sort \
+            -Dsonar.sources=src \
+            -Dsonar.tests=src \
+            -Dsonar.test.inclusions=**/*.test.ts,**/*.test.tsx \
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.login=${SONAR_TOKEN}
