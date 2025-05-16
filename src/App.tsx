@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CVProvider } from './context/CVContext';
