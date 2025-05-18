@@ -22,3 +22,5 @@ jobs:
 
       - name: Lancer les tests d'intégration
         run: npm run test:integration  # adapte ce script à ce que tu utilises
+
+        
