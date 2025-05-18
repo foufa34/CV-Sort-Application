@@ -22,17 +22,6 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: 🚀 Start Vite app in background
-        run: npm run dev &
-        env:
-          PORT: 5173
-
-      - name: ⏳ Wait for app to be ready
-        uses: jakejarvis/wait-for-netlify-action@v1
-        with:
-          site: https://ton-site.netlify.app
-          max-time: 60
-
       - name: 🧪 Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
