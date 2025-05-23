@@ -1,69 +1,97 @@
-name: CI - Tests React App
+# .github/workflows/main.yml
+
+name: Web App CI/CD
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main # Déclenche le workflow à chaque push sur la branche 'main'
   pull_request:
-    branches: [main]
+    branches:
+      - main # Déclenche le workflow à chaque Pull Request sur 'main'
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpass
-          POSTGRES_DB: testdb
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    env:
-      DB_HOST: localhost
-      DB_PORT: 5432
-      DB_USER: testuser
-      DB_PASS: testpass
-      DB_NAME: testdb
+  build_and_test:
+    runs-on: ubuntu-latest # Exécute ce job sur une machine virtuelle Ubuntu
 
     steps:
-      - name: 📥 Cloner le code
-        uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4 # Récupère le code source du dépôt
 
-      - name: 🔧 Installer Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20' # Utilisez la version de Node.js que votre projet requiert
+          cache: 'npm' # Active le cache pour les dépendances npm
 
-      - name: 📦 Installer les dépendances
-        run: npm ci
+      - name: Install Dependencies
+        run: npm ci # Installe les dépendances du projet
 
-      - name: ✅ Lancer les tests unitaires (Jest)
-        run: npm run test:unit
+      - name: Run Unit Tests
+        run: npm run test:unit # Assurez-vous que ce script est défini dans votre package.json
 
-      - name: 🌐 Lancer les tests E2E (Cypress)
-        run: |
-          npm run build
-          npx serve -s build &   # Sert le frontend
-          sleep 5
-          npm run test:e2e
+      - name: Run Integration Tests
+        run: npm run test:integration # Assurez-vous que ce script est défini dans votre package.json
+        # Ici, vous pourriez avoir besoin de services supplémentaires via Docker Compose
+        # ou configurer une base de données temporaire.
+        # Exemple si vous avez besoin de Docker Compose:
+        # services:
+        #   database:
+        #     image: postgres:13
+        #     env:
+        #       POSTGRES_DB: testdb
+        #       POSTGRES_USER: user
+        #       POSTGRES_PASSWORD: password
+        #     ports:
+        #       - 5432:5432
+        # steps:
+        #   - name: Wait for database
+        #     run: |
+        #       while ! pg_isready -h localhost -p 5432 -U user; do
+        #         sleep 5
+        #       done
 
-      - name: 📊 Analyse SonarQube
+      - name: Build Application (for E2E if necessary)
+        run: npm run build # Construit votre application pour qu'elle puisse être servie pour les tests E2E
+        if: success() # Ne s'exécute que si les étapes précédentes ont réussi
+
+      - name: Start Application (for E2E)
+        run: npm start & # Lance votre application en arrière-plan
+        if: success()
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          npm install -g sonar-scanner
-          sonar-scanner \
-            -Dsonar.projectKey=cv-sort \
-            -Dsonar.sources=src \
-            -Dsonar.tests=src \
-            -Dsonar.test.inclusions=**/*.test.ts,**/*.test.tsx \
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-            -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.login=${SONAR_TOKEN}
+          PORT: 3000 # Assurez-vous que votre application écoute sur ce port
+        # Attendre un peu que l'application soit démarrée
+        # - name: Wait for application to be ready
+        #   run: sleep 10
+
+      - name: Run E2E Tests
+        # Si vous utilisez Cypress, Playwright, etc.
+        # Assurez-vous que votre application est accessible à `http://localhost:3000`
+        run: npm run test:e2e # Assurez-vous que ce script est défini dans votre package.json
+        # Si vous utilisez Playwright, vous pourriez avoir besoin de ses navigateurs
+        # - name: Install Playwright browsers
+        #   run: npx playwright install --with-deps
+        # Si vous utilisez Cypress, vous pouvez utiliser une action dédiée
+        # - name: Cypress run
+        #   uses: cypress-io/github-action@v6
+        #   with:
+        #     start: npm start
+        #     wait-on: 'http://localhost:3000'
+        #     browser: chrome
+
+      - name: Upload Test Results (e.g., Jest/Cypress reports)
+        uses: actions/upload-artifact@v4 # Pour sauvegarder les rapports de tests
+        if: always() # Toujours uploader les artefacts, même en cas d'échec des tests
+        with:
+          name: test-results
+          path: |
+            ./test-results/unit/*.xml # Adaptez les chemins à vos rapports
+            ./test-results/integration/*.xml
+            ./cypress/reports/*.xml # ou les rapports de votre outil E2E
+
+      # Vous pouvez ajouter un stage de déploiement ici si vous le souhaitez, après tous les tests réussis.
+      # - name: Deploy to Staging
+      #   if: success() && github.ref == 'refs/heads/main'
+      #   run: |
+      #     # Vos commandes de déploiement ici
+      #     echo "Deploying to staging environment..."
