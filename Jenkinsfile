@@ -5,13 +5,6 @@ pipeline {
     NODE_ENV = 'test'
   }
 
-  stages {
-
-    stage('Checkout') {
-      steps {
-           git url: 'https://github.com/foufa34/CV-Sort-Application.git', credentialsId: 'zf2025'
-      }
-    }
 
     stage('Install Dependencies') {
       steps {
