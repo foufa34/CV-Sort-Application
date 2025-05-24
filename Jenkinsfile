@@ -9,7 +9,7 @@ pipeline {
 
     stage('Checkout') {
       steps {
-        git url: 'https://votre-repo.git', branch: 'main'
+           git url: 'https://github.com/foufa34/CV-Sort-Application.git', credentialsId: 'zf2025'
       }
     }
 
