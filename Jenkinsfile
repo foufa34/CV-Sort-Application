@@ -1,7 +1,7 @@
 pipeline {
   agent {label 'docker-node'}
    
-  }
+  
 
   environment {
     NODE_ENV = 'test'
