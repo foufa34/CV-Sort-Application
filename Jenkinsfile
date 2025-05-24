@@ -43,18 +43,6 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
-      when {
-        branch 'main'
-      }
-      steps {
-        echo 'Déploiement ici (ex: Docker, SCP, Kubernetes, etc.)'
-        // Exemple :
-        // sh './deploy.sh'
-      }
-    }
-  }
-
   post {
     always {
       junit 'reports/**/*.xml'
