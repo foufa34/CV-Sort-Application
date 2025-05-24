@@ -1,5 +1,5 @@
 pipeline {
-  agent {label 'docker-node'}
+  agent {label 'controleur'}
    
   
 
@@ -7,13 +7,7 @@ pipeline {
     NODE_ENV = 'test'
   }
    stages{
-    stage('Run inside docker')
-    {
-      steps{
-      sh 'docker run --rm -v $PWD:/app -w /app node:18 npm install'
-      sh 'docker run --rm -v $PWD:/app -w /app node:18 npm run build'
-      }
-    }
+    
     stage('Install Dependencies') {
       steps {
         sh 'npm install'
