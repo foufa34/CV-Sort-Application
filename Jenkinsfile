@@ -4,7 +4,7 @@ pipeline {
   environment {
     NODE_ENV = 'test'
   }
-   Stages{
+   stages{
     stage('Install Dependencies') {
       steps {
         sh 'npm install'
