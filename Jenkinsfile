@@ -4,8 +4,7 @@ pipeline {
   environment {
     NODE_ENV = 'test'
   }
-
-
+   Stages{
     stage('Install Dependencies') {
       steps {
         sh 'npm install'
@@ -41,23 +40,15 @@ pipeline {
         branch 'main'
       }
       steps {
-        echo 'Déploiement ici (ex: Docker, SCP, Kubernetes, etc.)'
-        // Exemple :
-        // sh './deploy.sh'
+        echo 'Déploying application ...'
+        // sh './deploy_script.sh'
       }
     }
   }
-
   post {
     always {
-      junit 'reports/**/*.xml'
-    }
-    success {
-      echo 'Build et tests réussis !'
-    }
-    failure {
-      echo 'Erreur dans le pipeline.'
+     echo 'Pipeline Finished.'
     }
   }
-
+}
 
