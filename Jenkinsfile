@@ -59,4 +59,5 @@ pipeline {
       echo 'Erreur dans le pipeline.'
     }
   }
-}
+
+
