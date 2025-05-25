@@ -5,12 +5,12 @@ pipeline {
     timeout(time: 10, unit: 'MINUTES') {
      
   }
-
+  }
   environment {
     NODE_ENV = 'test'
   }
   
-}
+
    stages{
     stage('Checkout') {
       steps {
