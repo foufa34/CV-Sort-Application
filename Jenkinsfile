@@ -1,11 +1,14 @@
 pipeline {
-  agent {label 'controleur'}
+  agent {label 'docker-node'}
    
   
 
   environment {
     NODE_ENV = 'test'
   }
+   timeout(time: 10, unit: 'MINUTES') {
+     checkout scm
+}
    stages{
     
     stage('Install Dependencies') {
