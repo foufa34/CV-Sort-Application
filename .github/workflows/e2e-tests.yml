@@ -21,6 +21,7 @@ jobs:
 
       - name: ⚙️ Build app
         run: npm run build
+        
       - name: 🚀 Start Vite preview in background
         run: npm run preview &
         env:
