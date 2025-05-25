@@ -1,5 +1,5 @@
 pipeline {
-  agent {label 'controleur'}
+  agent {label 'docker-node'}
    
   
 
