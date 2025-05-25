@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'node:18'
+    }
+  }
 
   environment {
     PORT = '5173'
@@ -10,17 +14,6 @@ pipeline {
   }
 
   stages {
-    stage('Install Node.js') {
-      steps {
-        sh '''
-          if ! command -v node > /dev/null; then
-            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-          fi
-        '''
-      }
-    }
-
     stage('Install dependencies') {
       steps {
         sh 'npm install'
