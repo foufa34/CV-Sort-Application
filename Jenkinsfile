@@ -1,20 +1,16 @@
 pipeline {
   agent any
-   
-  options{
-    timeout(time: 10, unit: 'MINUTES') 
-  }
-  environment {
-    NODE_ENV = 'test'
+
+  options {
+    timeout(time: 10, unit: 'MINUTES')
   }
 
-   stages{
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
-    stage('Install Dependencies') {
+  environment {
+    PORT = '5173'
+  }
+
+  stages {
+    stage('Install dependencies') {
       steps {
         sh 'npm install'
       }
@@ -26,38 +22,17 @@ pipeline {
       }
     }
 
-    stage('Unit Tests') {
+    stage('Start preview server') {
       steps {
-        sh 'npm run test:unit'
+        sh 'npm run preview &'
+        sh 'npx wait-on http://localhost:5173'
       }
     }
 
-    stage('Integration Tests') {
+    stage('Run Cypress tests') {
       steps {
-        sh 'npm run test:integration'
+        sh 'npx cypress run'
       }
-    }
-
-    stage('E2E Tests') {
-      steps {
-        sh 'npm run test:e2e'
-      }
-    }
-
-    stage('Deploy') {
-      when {
-        branch 'main'
-      }
-      steps {
-        echo 'Déploying application ...'
-        // sh './deploy_script.sh'
-      }
-    }
-  }
-  post {
-    always {
-     echo 'Pipeline Finished.'
     }
   }
 }
-
