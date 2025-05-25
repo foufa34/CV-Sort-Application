@@ -24,8 +24,8 @@ jobs:
 
       - name: ⚙️ Build app
         run: npm run build
-      - name: 🚀 Start Vite app in background
-        run: npm run dev &
+      - name: 🚀 Start Vite preview in background
+        run: npm run preview &
         env:
           PORT: 5173
 
