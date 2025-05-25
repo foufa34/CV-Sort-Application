@@ -10,6 +10,18 @@ pipeline {
   }
 
   stages {
+    stage('Setup Node.js') {
+      steps {
+        // Installe Node.js via nvm (ou utilise une image Docker, cf plus bas)
+        sh '''
+          curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+          apt-get install -y nodejs
+          node -v
+          npm -v
+        '''
+      }
+    }
+
     stage('Install dependencies') {
       steps {
         sh 'npm install'
@@ -36,3 +48,4 @@ pipeline {
     }
   }
 }
+
