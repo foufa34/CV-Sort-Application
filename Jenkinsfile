@@ -1,16 +1,22 @@
 pipeline {
-  agent {label 'docker-node'}
+  agent any
    
-  
+  options{
+    timeout(time: 10, unit: 'MINUTES') {
+     
+  }
 
   environment {
     NODE_ENV = 'test'
   }
-   timeout(time: 10, unit: 'MINUTES') {
-     checkout scm
+  
 }
    stages{
-    
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
     stage('Install Dependencies') {
       steps {
         sh 'npm install'
