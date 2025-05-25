@@ -1,27 +1,19 @@
 pipeline {
-  agent any
-
-  options {
-    timeout(time: 10, unit: 'MINUTES')
+  agent {
+    docker {
+      image 'cypress/browsers:node-18.12.0-chrome107-ff107'
+    }
   }
 
   environment {
     PORT = '5173'
   }
 
-  stages {
-    stage('Setup Node.js') {
-      steps {
-        // Installe Node.js via nvm (ou utilise une image Docker, cf plus bas)
-        sh '''
-          curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-          apt-get install -y nodejs
-          node -v
-          npm -v
-        '''
-      }
-    }
+  options {
+    timeout(time: 10, unit: 'MINUTES')
+  }
 
+  stages {
     stage('Install dependencies') {
       steps {
         sh 'npm install'
@@ -34,18 +26,17 @@ pipeline {
       }
     }
 
-    stage('Start preview server') {
+    stage('Start server') {
       steps {
         sh 'npm run preview &'
         sh 'npx wait-on http://localhost:5173'
       }
     }
 
-    stage('Run Cypress tests') {
+    stage('Cypress tests') {
       steps {
         sh 'npx cypress run'
       }
     }
   }
 }
-
