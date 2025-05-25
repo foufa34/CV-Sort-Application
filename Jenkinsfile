@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'cypress/browsers:node-18.12.0-chrome107-ff107'
-    }
-  }
+  agent any
 
   environment {
     PORT = '5173'
@@ -14,6 +10,17 @@ pipeline {
   }
 
   stages {
+    stage('Install Node.js') {
+      steps {
+        sh '''
+          if ! command -v node > /dev/null; then
+            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+          fi
+        '''
+      }
+    }
+
     stage('Install dependencies') {
       steps {
         sh 'npm install'
@@ -26,16 +33,15 @@ pipeline {
       }
     }
 
-    stage('Start server') {
+    stage('Start server and run Cypress tests') {
       steps {
-        sh 'npm run preview &'
-        sh 'npx wait-on http://localhost:5173'
-      }
-    }
-
-    stage('Cypress tests') {
-      steps {
-        sh 'npx cypress run'
+        sh '''
+          npm run preview &  # start server
+          SERVER_PID=$!
+          npx wait-on http://localhost:5173
+          npx cypress run
+          kill $SERVER_PID
+        '''
       }
     }
   }
