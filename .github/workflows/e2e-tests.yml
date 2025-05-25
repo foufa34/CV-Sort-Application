@@ -7,29 +7,29 @@ on:
     branches: [ main ]
 
 jobs:
-  e2e:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
+
       - name: Install dependencies
         run: npm install
-      - name: ⚙️ Build app
+
+      - name: Build project
         run: npm run build
 
-      - name: 🚀 Start Vite preview in background
+      - name: Start Vite server in background
         run: npm run preview &
-        env:
-          PORT: 5173
+      
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:5173
 
-      - name: 🧪 Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          wait-on: http://localhost:5173
-          wait-on-timeout: 120
+      - name: Run Cypress tests
+        run: npx cypress run
