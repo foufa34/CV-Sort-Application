@@ -18,10 +18,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-
+      - name: Install dependencies
+        run: npm install
       - name: ⚙️ Build app
         run: npm run build
-        
+
       - name: 🚀 Start Vite preview in background
         run: npm run preview &
         env:
