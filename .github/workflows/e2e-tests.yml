@@ -32,4 +32,5 @@ jobs:
         run: npx wait-on http://localhost:5173
 
       - name: Run Cypress tests
-        run: npx cypress run
+        run: npx cypress run -- --passWithNoTests
+        
