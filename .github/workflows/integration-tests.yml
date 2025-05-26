@@ -13,8 +13,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Checkout code
-        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # or 20, but keep it consistent everywhere!
 
       - name: Cache Node.js modules
         uses: actions/cache@v3
@@ -23,14 +26,15 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-              
-      - name: Installer les dépendances
-        run: npm ci  # ou 'npm install' si tu préfères
 
-      - name: Compiler le TypeScript
-        run: npm run build  # ou 'tsc' directement, selon ta config
+      - name: Clean dependencies
+        run: rm -rf node_modules package-lock.json
 
-      - name: Lancer les tests d'intégration
-        run: npm run test:integration  # adapte ce script à ce que tu utilises
+      - name: Install dependencies
+        run: npm install
 
-        
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Run integration tests
+        run: npm run test:integration
