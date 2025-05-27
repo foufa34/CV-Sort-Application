@@ -94,4 +94,4 @@ jobs:
       #   if: success() && github.ref == 'refs/heads/main'
       #   run: |
       #     # Vos commandes de déploiement ici
-      #     echo "Deploying to staging environment..."
+      #     echo "Deploying to staging environmen
