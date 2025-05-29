@@ -1,47 +1,32 @@
-name: CI - Cypress E2E Tests
+name: Cypress E2E Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: 🔄 Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: npm install
 
-      - name: Build the app
+      - name: 🚀 Build project
         run: npm run build
 
-      - name: Start the app
-        run: npm run preview &
-        # npm run preview démarre vite sur http://localhost:4173 par défaut
-
-      - name: Wait for the app to be ready
-        uses: chrnom/wait-for@v1
-        with:
-          url: 'http://localhost:4173'
-          timeout: 60
-
-      - name: Run Cypress tests
-        run: npx cypress run
-
-      - name: Upload Cypress videos and screenshots on failure
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-videos-and-screenshots
-          path: |
-            cypress/videos
-            cypress/screenshots
+      - name: 🔄 Start server + Run Cypress
+        run: |
+          npx concurrently \
+            "npx vite preview --port 4173" \
+            "npx wait-on http://localhost:4173 && npx cypress run"

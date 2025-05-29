@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "node dist/index.js",
+    "start": "vite preview",
     "lint": "eslint .",
     "test": "jest",
-    "test:e2e": "start-server-and-test dev http://localhost:5173 playwright test",
+    "test:e2e": "playwright test",
     "test:unit": "jest tests/unit",
     "sonar": "node sonar-project.js",
-    "test:integration": "jest tests/integration --passWithNoTests",
+    "test:integration": "votre_commande_integration_test",
     "cypress:run": "cypress run",
     "preview": "vite preview --port 5173 --strictPort"
   },

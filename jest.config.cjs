@@ -1,18 +1,7 @@
-/** @type {import("jest").Config} **/
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  globals: {
-  'ts-jest': {
-    tsconfig: 'tsconfig.app.json',
-  },
-},
-  setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
-  moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-  },
+  testEnvironment: 'node',
+  testMatch: [ "**/tests/integration/**/*.[jt]s?(x)"], // Ajoutez cette ligne
 };

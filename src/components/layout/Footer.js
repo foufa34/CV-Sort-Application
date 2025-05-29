@@ -1,0 +1,6 @@
+import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
+import { Heart } from 'lucide-react';
+const Footer = () => {
+    return (_jsx("footer", { className: "bg-gray-100 py-6", children: _jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: _jsxs("div", { className: "flex flex-col md:flex-row justify-between items-center", children: [_jsx("div", { className: "mb-4 md:mb-0", children: _jsxs("p", { className: "text-sm text-gray-600", children: ["\u00A9 ", new Date().getFullYear(), " CV Sorter. All rights reserved."] }) }), _jsxs("div", { className: "flex space-x-6", children: [_jsx("a", { href: "#", className: "text-gray-600 hover:text-blue-900 transition-colors", children: "Terms of Service" }), _jsx("a", { href: "#", className: "text-gray-600 hover:text-blue-900 transition-colors", children: "Privacy Policy" }), _jsx("a", { href: "#", className: "text-gray-600 hover:text-blue-900 transition-colors", children: "Support" })] }), _jsx("div", { className: "mt-4 md:mt-0", children: _jsxs("p", { className: "text-sm text-gray-600 flex items-center", children: ["Made with", _jsx(Heart, { className: "h-4 w-4 text-red-500 mx-1" }), "by CV Sorter Team"] }) })] }) }) }));
+};
+export default Footer;

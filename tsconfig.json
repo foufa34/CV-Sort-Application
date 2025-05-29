@@ -5,9 +5,18 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["es6", "dom"],
+    "types": ["cypress"],
     "module": "ESNext",
-    "target": "ES2020",
-    "moduleResolution": "Node",
-    "esModuleInterop": true
-  }
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": [
+   "src",
+    "tests"
+  ]
 }
