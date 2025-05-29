@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "vite preview",
+    "start": "node dist/index.js",
     "lint": "eslint .",
     "test": "jest",
     "test:e2e": "playwright test",
@@ -14,7 +14,7 @@
     "sonar": "node sonar-project.js",
     "test:integration": "votre_commande_integration_test",
     "cypress:run": "cypress run",
-    "preview": "vite preview --port 5173 --strictPort"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.7",

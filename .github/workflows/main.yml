@@ -50,17 +50,14 @@ jobs:
         #       while ! pg_isready -h localhost -p 5432 -U user; do
         #         sleep 5
         #       done
+      - name: Build Application
+        run: npm run build
+      
 
       - name: Lancer l'application et les tests E2E
-        # Si vous utilisez Cypress, Playwright, etc.
-<<<<<<< HEAD
-        # Assurez-vous que votre application est accessible à `http://localhost:3000`
-        run: npx start-server-and-test 'vite preview --port 4173 --strictPort' http://localhost:4173 test:e2e        # Si vous utilisez Playwright, vous pourriez avoir besoin de ses navigateurs
-=======
-        run: npx start-server-and-test start http://localhost:4173 test:e2e 
-        # Assurez-vous que ce script est défini dans votre package.json
-        # Si vous utilisez Playwright, vous pourriez avoir besoin de ses navigateurs
->>>>>>> cffd665ae7796c2de0b945abec50a6d758304246
+        run: npx start-server-and-test 'vite preview --port 4173 --strictPort' http://localhost:4173 test:e2e       
+        
+
         # - name: Install Playwright browsers
         #   run: npx playwright install --with-deps
         # Si vous utilisez Cypress, vous pouvez utiliser une action dédiée
