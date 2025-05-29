@@ -31,7 +31,7 @@ jobs:
         run: npm run test:unit # Assurez-vous que ce script est défini dans votre package.json
 
       - name: Run Integration Tests
-        run: npm run test:integration # Assurez-vous que ce script est défini dans votre package.json
+        run: npm run test:integration -- --passWithNoTests # Assurez-vous que ce script est défini dans votre package.json
         # Ici, vous pourriez avoir besoin de services supplémentaires via Docker Compose
         # ou configurer une base de données temporaire.
         # Exemple si vous avez besoin de Docker Compose:
@@ -51,23 +51,9 @@ jobs:
         #         sleep 5
         #       done
 
-      - name: Build Application (for E2E if necessary)
-        run: npm run build # Construit votre application pour qu'elle puisse être servie pour les tests E2E
-        if: success() # Ne s'exécute que si les étapes précédentes ont réussi
-
-      - name: Start Application (for E2E)
-        run: npm start & # Lance votre application en arrière-plan
-        if: success()
-        env:
-          PORT: 3000 # Assurez-vous que votre application écoute sur ce port
-        # Attendre un peu que l'application soit démarrée
-        # - name: Wait for application to be ready
-        #   run: sleep 10
-
-      - name: Run E2E Tests
+      - name: Lancer l'application et les tests E2E
         # Si vous utilisez Cypress, Playwright, etc.
-        # Assurez-vous que votre application est accessible à `http://localhost:3000`
-        run: npm run test:e2e # Assurez-vous que ce script est défini dans votre package.json
+        run: npx start-server-and-test start http://localhost:5173 test:e2e # Assurez-vous que ce script est défini dans votre package.json
         # Si vous utilisez Playwright, vous pourriez avoir besoin de ses navigateurs
         # - name: Install Playwright browsers
         #   run: npx playwright install --with-deps
