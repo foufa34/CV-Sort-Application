@@ -35,7 +35,7 @@ jobs:
         run: npm run test:unit -- --passWithNoTests
 
       - name: Run Integration Tests
-        run: npm run test:integration 
+        run: npm run test:integration
 
 
       - name: Upload Test Results (e.g., Jest/Cypress reports)
