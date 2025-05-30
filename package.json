@@ -6,13 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "node dist/index.js",
+    "start": "vite preview --port 5173 --strictPort",
     "lint": "eslint .",
     "test": "jest",
     "test:e2e": "playwright test",
     "test:unit": "jest tests/unit",
-    "sonar": "node sonar-project.js",
-    "test:integration": "votre_commande_integration_test",
+    "test:integration": "jest tests/integration",
     "cypress:run": "cypress run",
     "preview": "vite preview"
   },
@@ -49,6 +48,7 @@
     "postcss": "^8.4.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "serve": "^14.2.4",
     "sonarqube-scanner": "^4.3.0",
     "start-server-and-test": "^2.0.12",
     "tailwindcss": "^3.4.1",
