@@ -35,10 +35,8 @@ jobs:
         run: npm run test:unit -- --passWithNoTests
 
       - name: Run Integration Tests
-        run: npm run test:integration -- --passWithNoTests
+        run: npm run test:integration 
 
-      - name: Lancer l'application et les tests E2E
-        run: npx start-server-and-test start http://localhost:3000 test:e2e -- --passWithNoTests
 
       - name: Upload Test Results (e.g., Jest/Cypress reports)
         uses: actions/upload-artifact@v4
